@@ -1,11 +1,25 @@
 //SPDX-License-Identifier: MIT
-pragma solidity ^0.8.8;
+pragma solidity ^0.8.0;
 
 contract SimpleStorage {
     uint256 public number; 
     function store(uint256 _number) public {
         number = _number;
     } 
+
+    mapping(string => uint256) public nameToNumber;
+
+    struct People {
+        uint256 number;
+        string name;
+    }
+
+    People[] public people;
+    //calldata , memory , storage
+    function addPerson(string memory _name, uint256 _number) public {
+        people.push(People(_number, _name));
+        nameToNumber[_name] = _number;
+    }
 
     // view means read the state from this contract
 
@@ -24,5 +38,8 @@ contract SimpleStorage {
 
     //We dont spend gas if we use pure or view functions
     //We spend gas only if there is a change in state in the blockchain
-    
+
+
+
+
 }
