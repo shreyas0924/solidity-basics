@@ -18,9 +18,11 @@ contract FundMe {
         addressToAmountFunded[msg.sender] = msg.value;
     }
 
+    function wihtdraw() {
+        for(uint256 i=0; i<funders.length; i++){
+            address funder = funders[i];
+            addressToAmountFunded[funder] = 0;
+        }
+    }
     
-
-    // function wihtdraw() {
-    // }
-
 }
