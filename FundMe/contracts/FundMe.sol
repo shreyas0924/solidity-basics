@@ -24,5 +24,10 @@ contract FundMe {
             addressToAmountFunded[funder] = 0;
         }
     }
+
+   //reset the array
+    funders = new address[](0);
     
+    //transfer
+    payable(msg.sender).transfer(address(this).balance); //type casting msg.sender from address type to payable type
 }
