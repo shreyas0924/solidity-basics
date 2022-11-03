@@ -64,4 +64,16 @@ contract FundMe {
     } //First execute the modifier then do the rest of the code. The _ represents the rest of the code 
     //If the underscore is above then first do the rest of the code then do the require statement
 
+    //if someone sends eth to this contract without calling the fund function then we use receive() and fallback()
+
+    receive() external payable {
+        fund();
+    }
+    fallback() external payable {
+
+        
+
+        fund();
+    }
+
 }
