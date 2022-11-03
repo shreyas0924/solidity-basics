@@ -5,21 +5,22 @@ pragma solidity ^0.8.7;
 
 import "./PriceConverter.sol";
 
+error notOwner();
 
 contract FundMe { 
     using PriceConverter for uint256;
     address[] public funders;
     mapping(address => uint256) public addressToAmountFunded;
-    uint256 public minUsd = 50 * 1e18 ;
+    uint256 public constant MIN_USD = 50 * 1e18 ;
 
-    address public owner;
+    address public immutable i_owner;
 
     constructor(){
-        owner = msg.sender;
+        i_owner = msg.sender;
     }
 
     function fund() public payable {
-        require(msg.value.getConversionRate() > minUsd, "Not enough ether") ;
+        require(msg.value.getConversionRate() > MIN_USD, "Not enough ether") ;
         funders.push(msg.sender);
         addressToAmountFunded[msg.sender] = msg.value;
     }
@@ -53,7 +54,12 @@ contract FundMe {
     //its like custom functionality for a function
 
     modifier onlyOwner {
-        require(msg.sender == owner, "Sender is not owner");
+        // require(msg.sender == i_owner, "Sender is not owner");
+        //more gas efficient way to check owner is to create a custom eror log
+
+        if(msg.sender != i_owner){
+            revert notOwner();
+        }
         _;
     } //First execute the modifier then do the rest of the code. The _ represents the rest of the code 
     //If the underscore is above then first do the rest of the code then do the require statement
